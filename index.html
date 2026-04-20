@@ -147,7 +147,7 @@ header{background:var(--dark2);border-bottom:1px solid var(--border);padding:13p
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* DOCUMENT */
-.doc-wrap{background:var(--panel);border:1.5px solid rgba(212,160,23,.25);border-radius:var(--r2);overflow:hidden;position:relative;}
+.doc-wrap{background:var(--panel);border:1.5px solid rgba(212,160,23,.25);border-radius:var(--r2);overflow:hidden}
 .doc-toolbar{background:var(--dark3);border-bottom:1px solid var(--border);padding:12px 16px}
 .doc-toolbar-title{font-size:13px;font-weight:800;color:var(--gold);display:flex;align-items:center;gap:7px;margin-bottom:3px}
 .doc-toolbar-sub{font-size:11px;color:var(--muted);font-weight:600}
@@ -245,6 +245,7 @@ header{background:var(--dark2);border-bottom:1px solid var(--border);padding:13p
 .faq-section{margin-top:56px}
 .faq-item{border-bottom:1px solid var(--border)}
 .faq-q{padding:16px 0;font-size:14px;font-weight:700;color:#fff;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.faq-q:hover{color:var(--gold)}
 .faq-arrow{font-size:12px;color:var(--muted);transition:transform .2s;flex-shrink:0}
 .faq-item.open .faq-arrow{transform:rotate(180deg)}
 .faq-a{font-size:13px;color:var(--sub);line-height:1.7;padding-bottom:16px;display:none}
@@ -359,6 +360,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
 
   <div class="steps-wrap" id="stepsWrap" style="display:none;">
 
+    <!-- STEP 1 -->
     <div class="step-card active" id="step1">
       <div class="step-head" onclick="toggleStep(1)">
         <div class="step-num act" id="snum1">1</div>
@@ -379,6 +381,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
       </div>
     </div>
 
+    <!-- STEP 2 -->
     <div class="step-card" id="step2">
       <div class="step-head" onclick="toggleStep(2)">
         <div class="step-num wait" id="snum2">2</div>
@@ -389,6 +392,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
         <div class="note-box red" id="violNote"></div>
         <div id="subtypeArea" style="margin-bottom:14px;"></div>
 
+        <!-- What happened — contextual -->
         <div class="field-wrap" style="margin-bottom:12px;">
           <label class="field-label">What happened? Your side of the story <span style="color:#ef4444">*</span></label>
           <div class="note-box blue" id="storyHint" style="margin-bottom:8px;font-size:11px;"></div>
@@ -396,6 +400,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
           <div class="char-count" id="ownWordsCount">0 / 1500</div>
         </div>
 
+        <!-- Evidence type select -->
         <div class="field-wrap" style="margin-bottom:12px;">
           <label class="field-label">Do you have any evidence?</label>
           <select class="field-select" id="hasEvidence" onchange="updateEvidenceField()">
@@ -407,6 +412,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
           </select>
         </div>
 
+        <!-- Additional evidence — contextual label + hint -->
         <div class="field-wrap hidden" id="evidenceDescWrap" style="margin-bottom:12px;">
           <label class="field-label" id="evidenceDescLabel">Tell us more about your evidence</label>
           <div class="note-box blue" id="evidenceHint" style="margin-bottom:8px;font-size:11px;"></div>
@@ -421,6 +427,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
       </div>
     </div>
 
+    <!-- STEP 3 -->
     <div class="step-card" id="step3">
       <div class="step-head" onclick="toggleStep(3)">
         <div class="step-num wait" id="snum3">3</div>
@@ -438,13 +445,16 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
       </div>
     </div>
 
-  </div><div class="ai-output-wrap" id="aiOutput">
+  </div><!-- /steps-wrap -->
+
+  <!-- OUTPUT -->
+  <div class="ai-output-wrap" id="aiOutput">
     <div class="ai-status" id="aiStatus">
       <div class="spinner"></div>
       <span id="aiStatusText">Reviewing your case against OATH case law...</span>
     </div>
-    <div class="doc-wrap" id="docFrame">
-      <div class="doc-toolbar" id="toolbarPreview">
+    <div class="doc-wrap">
+      <div class="doc-toolbar">
         <div class="doc-toolbar-title">🔒 Your Defense — Prepared by Our Legal Team <span style="color:var(--muted);font-size:11px;font-weight:600;">(Preview)</span></div>
         <div class="doc-toolbar-sub">Full letter + OATH submission instructions unlocked after payment</div>
       </div>
@@ -455,6 +465,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
       </div>
     </div>
 
+    <!-- UNLOCK -->
     <div class="unlock-section" id="unlockSection">
       <div class="what-you-get">
         <div class="wyg-title">✅ What you get when you unlock</div>
@@ -509,13 +520,18 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
         <span class="secure-item">256-bit SSL</span>
         <span class="secure-item">Instant Download</span>
       </div>
-    </div><div class="success-banner" id="successBanner">
+    </div><!-- /unlock-section -->
+
+    <div class="success-banner" id="successBanner">
       <div class="success-icon">✅</div>
       <div class="success-title">Payment Confirmed — Your Defense is Unlocked!</div>
       <div class="success-sub">Your complete defense letter is ready below, with your OATH submission instructions and hearing prep guide. Print it now and bring it to your hearing.</div>
       <button class="btn-print" onclick="window.print()">🖨️ Print My Complete Defense Package Now</button>
     </div>
-  </div><div class="how-section">
+  </div><!-- /ai-output-wrap -->
+
+  <!-- HOW IT WORKS -->
+  <div class="how-section">
     <div class="section-header"><h2>How It Works</h2><p>Backed by hundreds of real OATH decisions reviewed by our legal team</p></div>
     <div class="steps-row">
       <div class="how-step"><div class="how-step-icon">📋</div><div class="how-step-title">1. Select Violation</div><div class="how-step-desc">Choose from 6 OATH case types — verbal abuse, unlicensed activity, fitness cases, and more</div></div>
@@ -525,6 +541,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
     </div>
   </div>
 
+  <!-- CASE TYPES -->
   <div class="cases-section">
     <div class="section-header"><h2>Know Your Case Type</h2><p>Each OATH case type has specific rules, penalties, and winning defenses</p></div>
     <div class="cases-grid">
@@ -537,6 +554,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
     </div>
   </div>
 
+  <!-- TESTIMONIALS -->
   <div class="testi-section">
     <div class="section-header"><h2>Drivers Who Fought Back</h2></div>
     <div class="testi-grid">
@@ -546,6 +564,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
     </div>
   </div>
 
+  <!-- FAQ -->
   <div class="faq-section">
     <div class="section-header"><h2>Frequently Asked Questions</h2></div>
     <div id="faqList">
@@ -559,7 +578,9 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
     </div>
   </div>
 
-</div><footer>
+</div><!-- /main -->
+
+<footer>
   <div class="footer-brand">Fight<span>My</span>TLCTicket<span>.com</span></div>
   <div class="footer-sub">Attorney-reviewed defense letters for NYC TLC licensees facing OATH hearings. Built on hundreds of real OATH decisions, not guesswork.</div>
   <div class="footer-links">
@@ -584,7 +605,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
 <script>
 const STRIPE_STANDARD='https://buy.stripe.com/8x2eVebcC7QddZ88Fq83C03';
 const STRIPE_PREMIUM='https://buy.stripe.com/14AcN6eoO9Yl3kudZK83C04';
-const SITE_URL='https://fightmytlcticket.com';
+const SITE_URL=window.location.origin+window.location.pathname;
 
 let selectedVtype=null,selectedTier='standard',selectedDefenses=new Set(),generatedLetter='',isPaid=false,hearingDaysLeft=null;
 
@@ -623,7 +644,7 @@ const VTYPE_CONFIG={
     evidenceHints:{
       dashcam:'Describe any relevant footage. For example: "I have dashcam footage from my driving since my license was restored showing I drive safely and professionally."',
       witness:'Describe your witnesses. For example: "My employer at [company] can testify to my reliability and professionalism since the incident. My program counselor [name/organization] can speak to my completion of treatment and changed behavior."',
-      documents:'List your supporting documents. For example: "(1) my rehabilitation program completion certificate from [program name], dated [date]; (2) my Uber driver rating of [X stars] over [X trips]; (3) a letter from my employer; (4) my DMV abstract showing my license has been fully restored; (5) character letters from [names]."',
+      documents:'List your supporting documents. For example: "I have: (1) my rehabilitation program completion certificate from [program name], dated [date]; (2) my Uber driver rating of [X stars] over [X trips]; (3) a letter from my employer; (4) my DMV abstract showing my license has been fully restored; (5) character letters from [names]."',
       multiple:'Describe each document. Start with the most recent rehabilitation evidence. Include all certificates, ratings, letters, and records that show positive change since the incident.'
     },
     subtypes:['DWAI conviction (alcohol)','DUI / DWI conviction','Failed drug test — cocaine','Failed drug test — other substance','Prescription medication caused positive test','Criminal conviction unrelated to driving'],
@@ -649,7 +670,7 @@ const VTYPE_CONFIG={
     evidenceHints:{
       dashcam:'Describe any dashcam footage. For example: "My dashcam shows the meter display at the start and end of the trip. The footage shows the rate code was [X] at pickup. The passenger can be seen [not objecting to the fare / the destination was outside the city]."',
       witness:'Describe any witness. For example: "The passenger from the disputed trip [if reachable] can confirm they requested to travel to [out-of-city location], making Rate 4 appropriate."',
-      documents:'List your documents. For example: "(1) GPS trip records showing the exact route taken; (2) my meter calibration records; (3) vehicle maintenance records; (4) records from prior trips showing the rate code issue."',
+      documents:'List your documents. For example: "I have (1) GPS trip records showing the exact route taken; (2) my meter calibration records; (3) vehicle maintenance records; (4) records from prior trips showing the rate code issue."',
       multiple:'Describe each piece of evidence. GPS records and meter records are the most important for overcharge cases.'
     },
     subtypes:['Rate 4 set from a prior trip / meter not reset','Passenger traveled outside city limits','Meter technical malfunction','GPS records show incorrect route','Passenger complaint — disputed fare amount'],
@@ -662,7 +683,7 @@ const VTYPE_CONFIG={
     evidenceHints:{
       dashcam:'This is your strongest evidence. Describe exactly what it shows. For example: "My dashcam records both video and audio inside and outside the vehicle. The footage from [time] shows the passenger [describe behavior]. The audio clearly captures the conversation. There is no physical contact visible at any point. I have preserved the footage on [USB/phone/cloud]. The timestamp and location data match the summons."',
       witness:'Describe your witness. For example: "There was [a passenger in the front seat / another customer at the location] who witnessed the incident. Their name is [name] and they are willing to testify that [what they observed]. They can be reached at [contact info]."',
-      documents:'List your documents. For example: "(1) the trip record from [Uber/Lyft/dispatch] showing pickup/dropoff times and locations; (2) my [X]-year TLC record with zero prior passenger complaints; (3) my passenger rating of [X stars] over [X trips]; (4) any messages or communications from the passenger."',
+      documents:'List your documents. For example: "I have: (1) the trip record from [Uber/Lyft/dispatch] showing pickup/dropoff times and locations; (2) my [X]-year TLC record with zero prior passenger complaints; (3) my passenger rating of [X stars] over [X trips]; (4) any messages or communications from the passenger."',
       multiple:'Start with dashcam footage if you have it — that is the most powerful. Then describe trip records, your clean history, and any witnesses.'
     },
     subtypes:['Verbal argument during trip','Passenger claims I used profanity or threats','Passenger claims physical contact occurred','Refusal of service allegation','Passenger claims discrimination'],
@@ -811,4 +832,548 @@ ${'━'.repeat(64)}
 Respectfully submitted,
 
 ${name}
-TLC License No.
+TLC License No. ${licenseNum}
+Summons No. ${summonsNum}
+Date: ${today}
+
+${'━'.repeat(64)}
+CERTIFICATION UNDER PENALTY OF PERJURY
+
+I, ${name}, certify under penalty of perjury that I am authorized to submit this defense statement and that to the best of my knowledge, all information contained herein is true and accurate.
+
+Signature: _________________________________  Date: ________________
+
+Printed Name: ${name}
+${'━'.repeat(64)}`;
+
+  const bodies={
+verbal:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum}, charging a violation of TLC Rule 80-12(e) of Title 35 RCNY — threatening, harassing, or abusing any person while performing duties as a TLC licensee. The alleged incident occurred on ${id} at ${incidentLoc}. Respondent has served as a licensed TLC driver for ${yearsDriver} with an unblemished professional record. For the reasons set forth herein, Respondent respectfully requests that this summons be dismissed in its entirety, or in the alternative, that the minimum available penalty be imposed.
+
+II. APPLICABLE LEGAL STANDARD
+
+TLC Rule 80-12(e) prohibits threatening, harassing, or abusing any person while performing the duties of a licensee. The applicable standard is objective — not whether the complaining party personally felt abused, but whether a reasonable person in that position would feel threatened, harassed, or abused. See TLC v. Wagner C. Oliveira, Appeal No. 70600808A (March 30, 2016). The TLC bears the burden of proving the violation by a preponderance of the evidence — i.e., that it is more likely than not that a reasonable person would experience the conduct as abusive. Mere expressions of frustration, even if heated, do not meet this standard without more. The Tribunal has further held that a driver who "chooses to engage in a publicly regulated business" accepts certain restrictions on conduct, but those restrictions do not eliminate the right to express disagreement in a non-threatening manner. See TLC v. Elie Merhy, Appeal No. 10075098C (May 1, 2017).
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following occurred: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence does not establish by a preponderance that Respondent's conduct met the objective standard for a violation of Rule 80-12(e).${defSection}
+
+In TLC v. Bataller, Appeal No. 73221705A (March 6, 2026), the Tribunal affirmed that the use of profanity, while relevant, must be assessed in context — the question is whether the totality of the conduct, viewed objectively, constitutes abuse. The Tribunal in TLC v. Dramera, Appeal No. 10270193H (March 6, 2026), further clarified that the "duties and responsibilities of a licensee" element is satisfied broadly but that the underlying conduct must still rise to the level of threatening, harassing, or abusing. In TLC v. Bhuyan (2021), an OATH ALJ recommended lifting suspension for a driver with a spotless 14-year record because an isolated incident did not demonstrate a pattern dangerous to public safety. Respondent's record similarly reflects years of professional service without prior verbal abuse complaints.
+
+Any words spoken on the date in question, when viewed in full context and assessed by the objective reasonable person standard, did not rise to the level of abuse contemplated by Rule 80-12(e). The absence of any physical conduct, threats, or pattern of behavior further undermines the charged violation. The TLC has not met its burden.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has driven professionally for ${yearsDriver} without a history of verbal abuse violations or passenger complaints. Any lapse in composure was isolated and is not reflective of Respondent's character or fitness. The consequences of suspension — including loss of income and inability to serve passengers — are severe and disproportionate to the circumstances presented. For all of the foregoing reasons, Respondent respectfully requests that this Honorable Tribunal dismiss Summons No. ${summonsNum} in its entirety, or in the alternative, impose the minimum available penalty.`,
+
+unlicensed:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum}, charging a violation of Administrative Code §19-506(b)(1) — offering to operate a for-hire vehicle without a valid TLC license. The alleged incident occurred on ${id} at ${incidentLoc}. Respondent has driven professionally for ${yearsDriver} and respectfully requests dismissal of this charge, or in the alternative, imposition of the minimum available penalty.
+
+II. APPLICABLE LEGAL STANDARD
+
+Administrative Code §19-506(b)(1) prohibits offering to operate for hire an unlicensed vehicle in New York City. The operative element is an actual agreement to transport for hire — while who solicited whom is not determinative, the TLC must still prove by a preponderance that an agreement was reached, that the vehicle was unlicensed, and that the summons is procedurally valid. See TLC v. Hyppolite, Appeal No. 73091959A (March 12, 2026) (holding that the agreement to transport constitutes the offer, but affirming that entrapment is not a recognized administrative defense). A sworn summons constitutes prima facie evidence but may be rebutted by credible evidence. The TLC's burden of establishing each element of the violation remains throughout.
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following occurred: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence is insufficient to establish the charged violation by a preponderance.${defSection}
+
+In TLC v. Hyppolite (2026), the Tribunal confirmed that while the identity of the soliciting party does not excuse the conduct, the core element — an actual agreement to transport for hire — must still be proven. Where the Respondent credibly disputes that any binding agreement was reached, or where procedural defects exist in the summons or the officer's identification of the vehicle, dismissal is appropriate. The Tribunal has also recognized that where a driver's TLC license was valid or pending renewal, the unlicensed activity charge is undermined. See TLC v. Casseus, Appeal No. 72141186A (December 4, 2018). Respondent submits that the evidence, when fully considered, does not meet the preponderance standard.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a TLC license for ${yearsDriver} and served passengers professionally throughout. The financial consequences of a $1,500 fine and potential vehicle seizure would be severe and disproportionate. Respondent respectfully requests dismissal of Summons No. ${summonsNum} in its entirety, or in the alternative, the minimum available penalty.`,
+
+fitness:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in the above-captioned fitness proceeding brought pursuant to Administrative Code §§19-505(l) and 19-512.1, and 35 RCNY §68-14. Respondent respectfully requests a finding of fitness to maintain his TLC Driver License, or in the alternative, the least restrictive available remedy. Respondent has served as a licensed TLC driver for ${yearsDriver} and submits that the totality of evidence demonstrates present fitness for continued licensed service.
+
+II. APPLICABLE LEGAL STANDARD
+
+Under 35 RCNY §68-14(e), a determination of unfitness "shall not be based solely by reason" of a conviction. The analysis must consider whether there is "a direct relationship between the criminal offense and the duties of a Licensee," or whether continued licensure "would pose an unreasonable risk to the safety or welfare of specific individuals or the general public." The Tribunal must weigh all eight factors under §68-14(f): (1) specific duties of a licensee; (2) bearing of the offense on fitness; (3) time elapsed since the offense; (4) age at time of offense; (5) years of licensure and overall record; (6) seriousness of the offense; (7) rehabilitation and good conduct; and (8) the Commission's interest in public safety. See Taxi & Limousine Comm'n v. Fernandez, OATH Index No. 486/26 (March 2, 2026). New York Correction Law Article 23-A further requires meaningful weight to be given to rehabilitation and elapsed time. Following Nnebe v. Daus, 644 F.3d 147 (2d Cir. 2011), the Commission must conduct an individualized review rather than applying categorical rules.
+
+III. STATEMENT OF FACTS
+
+The circumstances underlying this fitness proceeding are as follows: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+A thorough analysis of all eight §68-14(f) factors weighs in favor of a finding of continued fitness.${defSection}
+
+With respect to rehabilitation: Respondent has taken concrete, documented steps to address the circumstances underlying this proceeding. The OATH Tribunal has consistently held that genuine rehabilitation, supported by credible evidence, is a powerful mitigating factor against revocation. In TLC v. Bhuyan (2021), the ALJ recommended lifting suspension for a driver with a spotless record where an isolated incident did not reflect a dangerous pattern. In TLC v. Kamal (2021), suspension was lifted where evidence indicated the driver was not the initial aggressor and the incident was isolated. Even in TLC v. Fernandez (2026), where revocation was recommended, the Tribunal gave full weight to rehabilitation evidence while finding the elapsed time insufficient — a factor that distinguishes Respondent's case where greater time has passed and stronger rehabilitation evidence exists.
+
+The Commission's interest in public safety — while paramount — must be balanced against the driver's years of professional service, demonstrated rehabilitation, and the absence of any pattern of dangerous behavior. Under the preponderance standard, the evidence supports a finding of present fitness.${evSection?'\n\n'+evSection.trim():''}
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has driven professionally for ${yearsDriver}, serving passengers safely and responsibly. The incident underlying this proceeding was isolated. Respondent has cooperated fully with all required programs, demonstrated genuine rehabilitation, and maintains strong community and family ties. Revocation would have a devastating financial impact. Respondent respectfully requests a finding of fitness and restoration of full licensure.`,
+
+fhv_nonuse:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum} charging a violation of Administrative Code §19-504(g) — nonuse of a For-Hire Vehicle (FHV) license for more than 60 consecutive days. The alleged period of nonuse is stated to have begun approximately ${id}. Respondent has maintained a TLC license for ${yearsDriver} and respectfully requests dismissal of this charge, or in the alternative, no revocation.
+
+II. APPLICABLE LEGAL STANDARD
+
+Administrative Code §19-504(g) provides for revocation of an FHV license upon nonuse for 60 or more consecutive days. The Code recognizes two defenses: (1) force majeure or similar acts beyond the owner's control, and (2) a disabling illness suffered by an owner-driver. See TLC v. STV Transportation Corp., Appeal No. JW0006817 (March 11, 2026); TLC v. Ketalos Enterprise, Inc., Appeal No. JW0006842 (March 11, 2026). A TLC employee Certification constitutes prima facie evidence of nonuse when accompanied by the summons, but Respondent may rebut this case with evidence of a recognized defense. Alternatively, nonuse may be excused where the vehicle was placed in TLC-authorized storage under §59A-36 (up to 90 days) or the license was properly transferred under §59A-07(f)(2).
+
+III. STATEMENT OF FACTS
+
+The circumstances surrounding the alleged period of nonuse are as follows: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+Respondent submits that the evidence establishes a recognized defense to the charged nonuse, or that Petitioner has not established its prima facie case.${defSection}
+
+The Appeals Tribunal in STV Transportation (2026) and Ketalos (2026) confirmed the two recognized defenses and held that vehicle repair, standing alone, does not constitute force majeure. However, those decisions also confirm that where a respondent presents credible evidence of a qualifying defense, the charge must fail. Respondent presents such evidence here. Furthermore, where TLC trip data records are inaccurate or incomplete, the prima facie case is weakened and may be rebutted. Respondent respectfully requests that all supporting documentation be given full evidentiary weight.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a TLC FHV license for ${yearsDriver} with consistent compliance. The period of nonuse was involuntary. Revocation would cause severe financial hardship and end Respondent's livelihood. Respondent respectfully requests dismissal of Summons No. ${summonsNum}, or in the alternative, that no revocation be imposed.`,
+
+overcharge:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum} charging an overcharge violation — specifically, alleged application of the out-of-town rate (Rate 4) to a trip that began and ended within New York City, or a related overcharge. The alleged incident occurred on ${id} at ${incidentLoc}. Respondent has driven professionally for ${yearsDriver} and respectfully requests dismissal of this summons, or in the alternative, the minimum available penalty.
+
+II. APPLICABLE LEGAL STANDARD
+
+TLC overcharge regulations prohibit applying a rate other than the authorized rate for the trip. The TLC typically relies on GPS computer records to establish the charge. GPS records, however, are not infallible — they are subject to technical errors, rate code carry-over from prior trips, coordinate inaccuracies, and data processing errors. The TLC must prove the violation by a preponderance of the evidence. Respondent has the right to review all GPS records prior to the hearing and to challenge specific inaccuracies. See TLC v. Cheema (2010) (noting that systematic overcharging across hundreds of trips is distinguishable from isolated technical anomalies, which require more careful factual scrutiny).
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following circumstances pertained to the trip and fare at issue: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence does not support a finding of intentional overcharging by a preponderance.${defSection}
+
+A common and well-recognized cause of apparent Rate 4 charges is meter carry-over — where Rate 4 was set for a prior out-of-city trip and the meter was not reset before the next passenger boarded. This is a technical issue, not intentional misconduct. Where a driver demonstrates that the rate code was set inadvertently and that no deliberate overcharge occurred, the element of willful misconduct necessary to support severe penalties is absent. The GPS records, when reviewed carefully, do not accurately reflect the circumstances of the trip. Respondent further notes that no contemporaneous complaint was filed by any passenger regarding the fare — a significant fact undermining the inference of any overcharge. The absence of a victim complaint, combined with Respondent's clean overcharge history, weighs heavily against the charged violation.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a clean overcharge record throughout ${yearsDriver} of licensed driving. No prior Rate 4 violations exist. This alleged incident, if it occurred at all, was an isolated technical anomaly. Suspension or revocation would be grossly disproportionate. Respondent respectfully requests dismissal of Summons No. ${summonsNum} in its entirety.`,
+
+passenger:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum} arising from a passenger complaint alleging improper conduct on ${id} at ${incidentLoc}. Respondent respectfully denies the material allegations and requests dismissal of all charges, or in the alternative, the minimum available penalty. Respondent has served as a TLC-licensed driver for ${yearsDriver} with a consistent record of professionalism and passenger safety.
+
+II. APPLICABLE LEGAL STANDARD
+
+In passenger complaint proceedings, the TLC must prove by a preponderance of the evidence both that Respondent engaged in the alleged conduct AND that continued licensure presents a threat to public health or safety. See OATH TLC Licensee Cases Guide (Rev. Dec. 2025); Nnebe v. Daus, 644 F.3d 147, 159 (2d Cir. 2011) ("among the most critical functions performed by the TLC are ensuring the safety of the taxi-riding public and maintaining the public's trust"). The complainant's testimony, standing alone, is not automatically sufficient — the Hearing Officer must independently assess credibility and weigh all available evidence. Respondent has the right to cross-examine the complaining witness. Following Nnebe, the TLC's interest in public safety must be weighed against the driver's due process rights and livelihood interests through individualized review.
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following events occurred: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence does not establish by a preponderance that Respondent engaged in the alleged conduct, nor that continued licensure presents any threat to public health or safety.${defSection}
+
+The complainant's account is inconsistent, unsupported by independent evidence, and does not meet the preponderance standard. Where a complainant's testimony is the sole basis for the charge and is contradicted by physical evidence, video footage, or witness testimony, the TLC has failed to meet its burden. See TLC v. Dramera, Appeal No. 10270193H (March 6, 2026) (credibility of the complaining witness is central to the determination). In TLC v. Kamal (2021), the ALJ recommended lifting suspension where evidence suggested the driver was not the initial aggressor — demonstrating that context and credibility are paramount. Critically, the standard requires not merely that an incident occurred, but that Respondent's continued licensure poses a specific threat to public safety. Respondent's clean complaint history, high passenger ratings, and ${yearsDriver} of professional service demonstrate conclusively that no such threat exists.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a TLC license for ${yearsDriver} without prior passenger complaints or conduct violations. High ratings and the absence of any prior disciplinary history demonstrate that this is an isolated, uncorroborated allegation inconsistent with Respondent's entire professional record. Revocation or suspension would be disproportionate and would cause severe financial hardship. Respondent respectfully requests that this Honorable Tribunal dismiss all charges contained in Summons No. ${summonsNum} in their entirety.`
+  };
+
+  return header+'\n\n'+(bodies[vtype]||bodies.verbal)+'\n'+footer;
+}
+
+/* ── GENERATE DEFENSE (template-based, no API needed) ── */
+async function generateDefense(){
+  if(!selectedVtype){showToast('⚠️ Please select a violation type first');return;}
+  const name=document.getElementById('driverName').value.trim()||'the Respondent';
+  const licenseNum=document.getElementById('licenseNum').value.trim()||'N/A';
+  const summonsNum=document.getElementById('summonsNum').value.trim()||'N/A';
+  const hearDate=document.getElementById('hearDate').value||'N/A';
+  const incidentDate=document.getElementById('incidentDate').value||'N/A';
+  const incidentLoc=document.getElementById('incidentLoc').value.trim()||'N/A';
+  const yearsDriver=document.getElementById('yearsDriver').value.trim()||'several years';
+  const ownWords=document.getElementById('ownWords').value.trim()||'';
+  const hasEvidence=document.getElementById('hasEvidence').value||'none';
+  const evidenceDesc=document.getElementById('evidenceDesc').value.trim()||'';
+  const additionalInfo=document.getElementById('additionalInfo').value.trim()||'';
+  const defenseList=Array.from(selectedDefenses);
+  if(!ownWords){showToast('⚠️ Please describe what happened (Step 2)');goStep(2);return;}
+
+  document.getElementById('aiOutput').classList.add('vis');
+  document.getElementById('aiStatus').style.display='flex';
+  document.getElementById('docContent').innerHTML='<div class="watermark-diag" id="docWatermark">FightMyTLCTicket.com — Preview Only</div><div class="doc-fade" id="docFade"></div><div class="doc-lock-badge" id="docLockBadge"><div class="doc-lock-inner">🔒 Unlock complete letter + instructions below</div></div>';
+  document.getElementById('unlockSection').classList.remove('vis');
+  document.getElementById('successBanner').classList.remove('vis');
+  document.getElementById('generateBtn').disabled=true;
+  document.getElementById('generateBtn').innerHTML='⏳ Preparing your defense...';
+
+  const msgs=['Reviewing your case against OATH case law...','Identifying applicable TLC rules and precedents...','Preparing your defense arguments...','Applying relevant OATH appeal decisions...','Finalizing your defense letter...'];
+  let mi=0;
+  const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('aiStatusText').textContent=msgs[mi];},2200);
+
+  // Simulate preparation time for UX, then render letter
+  await new Promise(r=>setTimeout(r,3500));
+  clearInterval(iv);
+  document.getElementById('aiStatus').style.display='none';
+
+  try{
+    const letter=buildLetter(selectedVtype,name,licenseNum,summonsNum,hearDate,incidentDate,incidentLoc,yearsDriver,ownWords,hasEvidence,evidenceDesc,additionalInfo,defenseList);
+    generatedLetter=letter;
+
+    // Truncate at CONCLUSION / Respectfully submitted for preview
+    const cutIdx=(()=>{const m=letter.search(/Respectfully submitted/i);return m>0?m:Math.floor(letter.length*.62);})();
+    const preview=letter.substring(0,cutIdx);
+
+    const docContent=document.getElementById('docContent');
+    docContent.innerHTML=`<div class="watermark-diag" id="docWatermark">FightMyTLCTicket.com — Preview Only</div><span id="docText"></span><span class="typing-cursor" id="typingCursor"></span><div class="doc-fade" id="docFade"></div><div class="doc-lock-badge" id="docLockBadge"><div class="doc-lock-inner">🔒 Unlock complete letter + instructions below</div></div>`;
+    const docText=document.getElementById('docText');
+    let i=0;const chars=preview.split('');
+    function typeNext(){
+      if(i<chars.length){
+        docText.textContent+=chars[i];i++;
+        setTimeout(typeNext,chars[i-1]==='\n'?8:chars[i-1]==='.'?25:4);
+      } else {
+        const cur=document.getElementById('typingCursor');if(cur)cur.remove();
+        document.getElementById('docFade').classList.add('vis');
+        document.getElementById('docLockBadge').classList.add('vis');
+        setTimeout(()=>{updateUrgencyBar();document.getElementById('unlockSection').classList.add('vis');document.getElementById('unlockSection').scrollIntoView({behavior:'smooth',block:'nearest'});},500);
+      }
+    }
+    typeNext();
+    docContent.addEventListener('contextmenu',e=>{if(!isPaid)e.preventDefault();});
+    document.addEventListener('keydown',e=>{if(!isPaid&&docContent.contains(document.activeElement)&&(e.ctrlKey||e.metaKey)&&['c','a','p'].includes(e.key))e.preventDefault();});
+  } catch(err){
+    console.error(err);
+    document.getElementById('aiStatus').innerHTML='<span style="color:#f87171">⚠️ Error building letter — please try again.</span>';
+    showToast('❌ Error building letter — please retry');
+  } finally {
+    document.getElementById('generateBtn').disabled=false;
+    document.getElementById('generateBtn').innerHTML='⚖️ Regenerate Defense Letter';
+  }
+}
+
+/* ── URGENCY BAR ── */
+function updateUrgencyBar(){
+  const bar=document.getElementById('urgencyBar');
+  if(!bar||hearingDaysLeft===null){if(bar)bar.classList.remove('vis');return;}
+  if(hearingDaysLeft<=0){bar.classList.add('vis');bar.innerHTML='⛔ Your hearing date has passed — request a new one immediately.';}
+  else if(hearingDaysLeft<=7){
+    bar.classList.add('vis');
+    bar.innerHTML=`⚠️ Based on your hearing date, you have <strong style="color:#fff">${hearingDaysLeft} day${hearingDaysLeft===1?'':'s'}</strong> left — don't wait to unlock.`;
+    const btn=document.getElementById('payBtn');
+    if(btn&&selectedTier==='standard')btn.innerHTML=`🖨️ Unlock &amp; Print My Complete Defense — $19.99 · ${hearingDaysLeft} day${hearingDaysLeft===1?'':'s'} left<span class="btn-pay-sub">Includes full letter, submission instructions &amp; hearing guide</span>`;
+  } else if(hearingDaysLeft<=14){bar.classList.add('vis');bar.innerHTML=`📅 <strong style="color:#fff">${hearingDaysLeft} days</strong> until your hearing — prepare your defense today.`;}
+  else bar.classList.remove('vis');
+}
+
+/* ── TIER SELECT ── */
+function selectTier(tier,el){
+  selectedTier=tier;
+  document.getElementById('card-standard').classList.remove('sel','sel-premium');
+  document.getElementById('card-premium').classList.remove('sel','sel-premium');
+  const btn=document.getElementById('payBtn');
+  if(tier==='standard'){
+    el.classList.add('sel');btn.className='btn-pay';
+    const dn=hearingDaysLeft&&hearingDaysLeft<=7?` · ${hearingDaysLeft} day${hearingDaysLeft===1?'':'s'} left`:'';
+    btn.innerHTML=`🖨️ Unlock &amp; Print My Complete Defense — $19.99${dn}<span class="btn-pay-sub">Includes full letter, submission instructions &amp; hearing guide</span>`;
+  } else {
+    el.classList.add('sel-premium');btn.className='btn-pay premium';
+    btn.innerHTML=`⭐ Defense + Attorney Consultation — $49.99<span class="btn-pay-sub">Everything in Standard + 15-min strategy call with a TLC defense specialist</span>`;
+  }
+}
+
+/* ── PAYLOAD SAVE / RESTORE ── */
+function savePaymentPayload(){
+  const payload={
+    letter:generatedLetter||'',
+    vtype:selectedVtype||'verbal',
+    tier:selectedTier||'standard',
+    savedAt:Date.now()
+  };
+  try{localStorage.setItem('tlc_payment_payload',JSON.stringify(payload));}catch(e){}
+  try{sessionStorage.setItem('tlc_payment_payload',JSON.stringify(payload));}catch(e){}
+  try{localStorage.setItem('tlc_letter',payload.letter);}catch(e){}
+  try{localStorage.setItem('tlc_vtype',payload.vtype);}catch(e){}
+  try{localStorage.setItem('tlc_tier',payload.tier);}catch(e){}
+}
+
+function getPaymentPayload(){
+  let payload=null;
+  try{payload=JSON.parse(sessionStorage.getItem('tlc_payment_payload')||'null');}catch(e){payload=null;}
+  if(!payload){
+    try{payload=JSON.parse(localStorage.getItem('tlc_payment_payload')||'null');}catch(e){payload=null;}
+  }
+  if(!payload){
+    payload={
+      letter:localStorage.getItem('tlc_letter')||'',
+      vtype:localStorage.getItem('tlc_vtype')||'verbal',
+      tier:localStorage.getItem('tlc_tier')||'standard'
+    };
+  }
+  return payload||{};
+}
+
+function clearPaymentParams(){
+  const clean=window.location.pathname+window.location.hash;
+  window.history.replaceState({},'',clean);
+}
+
+function unlockPaidDocument(payload){
+  if(!payload||!payload.letter)return false;
+  isPaid=true;
+  generatedLetter=payload.letter;
+  selectedVtype=payload.vtype||'verbal';
+  selectedTier=payload.tier||'standard';
+
+  const aiOutput=document.getElementById('aiOutput');
+  const docContent=document.getElementById('docContent');
+  aiOutput.classList.add('vis');
+  docContent.classList.add('unlocked');
+
+  const wm=document.getElementById('docWatermark');
+  if(wm)wm.remove();
+  document.getElementById('docFade')?.classList.remove('vis');
+  document.getElementById('docLockBadge')?.classList.remove('vis');
+
+  docContent.innerHTML='';
+  docContent.textContent=buildSubmissionInstructions(selectedVtype)+'\n\n'+generatedLetter;
+
+  document.getElementById('aiStatus').style.display='none';
+  document.getElementById('unlockSection').classList.remove('vis');
+  document.getElementById('successBanner').classList.add('vis');
+  if(selectedTier==='premium')selectTier('premium',document.getElementById('card-premium'));
+  else selectTier('standard',document.getElementById('card-standard'));
+
+  showToast('✅ Payment confirmed — defense unlocked!');
+  setTimeout(()=>aiOutput.scrollIntoView({behavior:'smooth'}),500);
+  return true;
+}
+
+/* ── PAY ── */
+function handlePay(){
+  if(!generatedLetter){showToast('⚠️ Build your defense letter first');return;}
+  savePaymentPayload();
+  const link=selectedTier==='premium'?STRIPE_PREMIUM:STRIPE_STANDARD;
+  const successUrl=SITE_URL+'?paid=true&tier='+encodeURIComponent(selectedTier);
+  const cancelUrl=SITE_URL+'?canceled=true';
+  const joiner=link.includes('?')?'&':'?';
+  window.location.href=link+joiner+'success_url='+encodeURIComponent(successUrl)+'&cancel_url='+encodeURIComponent(cancelUrl);
+}
+
+/* ── POST-PAYMENT ── */
+function checkPaymentReturn(){
+  const params=new URLSearchParams(window.location.search);
+  const paid=params.get('paid')==='true'||params.get('success')==='1'||params.get('download')==='1';
+  const canceled=params.get('canceled')==='true'||params.get('canceled')==='1';
+  const payload=getPaymentPayload();
+
+  if(paid){
+    if(!unlockPaidDocument(payload))showToast('⚠️ Payment return detected, but the defense draft could not be restored on this device.');
+    clearPaymentParams();
+    return;
+  }
+
+  if(canceled){
+    showToast('⚠️ Payment canceled — your progress is still saved on this device.');
+    clearPaymentParams();
+    return;
+  }
+}
+
+/* ── SUBMISSION INSTRUCTIONS ── */
+function buildSubmissionInstructions(vtype){
+  const shared=`OATH Contact: (212) 933-3097 | OATHCalUnit@OATH.nyc.gov
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+YOUR COMPLETE DEFENSE LETTER:`;
+  const guides={
+    verbal:`OATH SUBMISSION INSTRUCTIONS — VERBAL ABUSE (Rule 80-12e)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HOW TO SUBMIT:
+1. Email defense letter to OATHCalUnit@OATH.nyc.gov at least 24 hours before hearing
+2. Email copy to the TLC attorney named on your trial notice
+3. In-person hearings: bring 3 printed copies (judge, TLC attorney, yourself)
+4. Virtual hearings: email all documents before hearing per your notice instructions
+
+WHAT TO BRING / HAVE READY:
+□ This signed defense letter
+□ Your TLC license
+□ Dashcam footage or screenshots (email to judge and TLC attorney in advance)
+□ Witness — they must attend or be available by phone during hearing
+□ Your TLC driving record (request from TLC LARS system at nyc.gov/taxi)
+
+HEARING DAY — WHAT TO EXPECT:
+• First you will have a Conference with the judge and TLC attorney to explore settlement
+• You do not have to accept a settlement — you have the right to a full trial
+• If no settlement: present your letter, call your witnesses, cross-examine the officer
+• Make a closing statement requesting dismissal or minimum penalty
+
+AFTER YOUR HEARING:
+• Judge sends a Report and Recommendation to TLC Chairperson
+• You have 10 days to submit written comments before the final decision
+• If ruled against, you may appeal to NY State Supreme Court
+
+`,
+    unlicensed:`OATH SUBMISSION INSTRUCTIONS — UNLICENSED ACTIVITY (§19-506)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HOW TO SUBMIT:
+1. Email defense to OATHCalUnit@OATH.nyc.gov before your hearing
+2. Email copy to TLC attorney on your notice
+3. Bring 3 printed copies if in-person
+
+KEY DOCUMENTS TO GATHER NOW:
+□ Any TLC license documentation (current or showing prior valid status)
+□ Vehicle registration
+□ Platform app records showing on-duty/off-duty status at time of incident
+□ Any dashcam footage of the interaction
+
+HEARING STRATEGY:
+• Challenge whether a formal "agreement" to transport for hire was actually made
+• Request all summons documentation from TLC in advance
+• An unsworn summons alone is not sufficient — TLC must provide additional evidence
+• Cross-examine the officer on the details of the interaction
+
+AFTER YOUR HEARING:
+• Judge sends Report and Recommendation to TLC Chairperson
+• 10 days to submit written comments
+• If ruled against, appeal to NY State Supreme Court
+
+`,
+    fitness:`OATH SUBMISSION INSTRUCTIONS — FITNESS HEARING (§68-14)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HOW TO SUBMIT:
+1. Email defense and ALL supporting documents to OATHCalUnit@OATH.nyc.gov
+2. Email TLC attorney named on your notice
+3. Submit at least 48 hours before your hearing date
+
+DOCUMENTS TO GATHER (gather everything — more is better):
+□ Rehabilitation program certificates (with dates)
+□ Letters of support from employer, family, community members
+□ Uber/Lyft passenger rating screenshots
+□ DMV driving record abstract
+□ Court documents showing final disposition of charges
+□ Doctor or counselor letter (for drug/alcohol cases)
+□ Employment records showing continued responsible work
+
+IMPORTANT NOTES:
+• The judge weighs 8 factors under 35 RCNY §68-14(f)
+• Financial hardship is NOT a mitigating factor under TLC rules
+• Focus on: time elapsed, rehabilitation, public safety, commitment to change
+• For serious cases (revocation risk), strongly consider hiring a licensed attorney
+
+AFTER YOUR HEARING:
+• 10 days to submit written comments to TLC Chairperson
+• If revocation ordered, you may reapply for a new license after a waiting period
+
+`,
+    fhv_nonuse:`OATH SUBMISSION INSTRUCTIONS — FHV NONUSE (§19-504g)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HOW TO SUBMIT:
+1. Email defense and documentation to OATHCalUnit@OATH.nyc.gov
+2. Email copy to TLC attorney on your notice
+
+THE TWO RECOGNIZED DEFENSES — BRING PROOF FOR WHICHEVER APPLIES:
+
+Force Majeure:
+□ Official records of the qualifying event (government orders, weather service records,
+  fire department/insurance reports, news documentation)
+□ Explanation of why the specific event made vehicle operation impossible
+
+Disabling Illness:
+□ Medical records / hospital discharge papers
+□ Doctor's letter specifically stating inability to drive during the relevant period
+
+IF VEHICLE WAS IN STORAGE OR TRANSFERRED:
+□ TLC storage confirmation (§59A-36 — up to 90 days permitted)
+□ License transfer paperwork (§59A-07(f)(2) — $25 fee, Chairperson approval)
+
+NOTE: Vehicle repair invoices alone will NOT succeed as a defense.
+
+`,
+    overcharge:`OATH SUBMISSION INSTRUCTIONS — OVERCHARGE / RATE 4
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+HOW TO SUBMIT:
+1. Email defense to OATHCalUnit@OATH.nyc.gov
+2. Email TLC attorney on your notice
+
+DO THIS IMMEDIATELY BEFORE YOUR HEARING:
+□ Request your GPS trip records from TLC — you have the right to review them
+□ Compare GPS data against your memory of the trip (start, end, route, rate code)
+□ Check for errors in start/end location, timestamps, or rate code display
+□ Gather meter calibration records and any vehicle maintenance records
+
+WHAT TO ARGUE:
+□ Rate 4 was left set by a prior passenger — meter was not reset
+□ GPS records contain specific, identifiable errors (document them)
+□ Trip ended outside city limits (Rate 4 was appropriate)
+□ Meter malfunction (have service records)
+
+`,
+    passenger:`OATH SUBMISSION INSTRUCTIONS — PASSENGER COMPLAINT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠️ URGENT — DO THIS NOW IF YOU HAVEN'T ALREADY:
+□ Pull your dashcam footage IMMEDIATELY — it overwrites in 48–72 hours
+□ Save all platform trip records, messages, ratings from this trip
+□ Write down every detail you remember while it is still fresh
+
+HOW TO SUBMIT:
+1. Email defense and evidence to OATHCalUnit@OATH.nyc.gov
+2. Email TLC attorney on your notice
+3. Email dashcam footage or links to video in advance
+
+AT YOUR HEARING:
+• The complainant will likely testify — you WILL have the right to cross-examine them
+• Focus cross-examination on inconsistencies and what they cannot prove
+• TLC must prove continued licensure is a "threat to public health or safety"
+• Present your clean multi-year complaint history and passenger ratings
+
+PASSENGER COMPLAINTS ONLY — IMPORTANT APPEAL RULE:
+If the Chairperson rules against you, you must FIRST appeal to the full TLC Commission
+before you can proceed to NY State Supreme Court. Do not skip this step.
+
+`
+  };
+  return (guides[vtype]||guides.verbal)+shared;
+}
+
+/* ── COUNTDOWN ── */
+function updateCountdown(){
+  const hdate=document.getElementById('hearDate')?.value;
+  const bar=document.getElementById('countdownBar'),txt=document.getElementById('countdownText');
+  if(!hdate){bar.classList.remove('vis');hearingDaysLeft=null;return;}
+  const today=new Date();today.setHours(0,0,0,0);
+  const diff=Math.round((new Date(hdate+'T00:00:00')-today)/(864e5));
+  hearingDaysLeft=diff;bar.classList.add('vis');
+  if(diff<0)txt.innerHTML='<span style="color:#ef4444;font-weight:900">⛔ HEARING DATE HAS PASSED — Request a new hearing immediately.</span>';
+  else if(diff===0)txt.innerHTML='<span style="color:#ef4444;font-weight:900">🚨 YOUR HEARING IS TODAY — Submit your defense right now. Call OATH: (212) 933-3097</span>';
+  else if(diff<=3)txt.innerHTML=`⚠️ <strong style="color:#fff">${diff} day${diff===1?'':'s'}</strong> until your hearing — Submit your defense RIGHT NOW.`;
+  else if(diff<=14)txt.innerHTML=`📅 <strong style="color:#fff">${diff} days</strong> until your hearing — prepare and submit your defense soon.`;
+  else bar.classList.remove('vis');
+}
+
+/* ── MISC ── */
+function toggleFaq(el){el.closest('.faq-item').classList.toggle('open');}
+function doShare(m){
+  const msg=encodeURIComponent('⚖️ Got a NYC TLC ticket? Fight it with expert-prepared defense letters: '+SITE_URL);
+  if(m==='wa')window.open('https://wa.me/?text='+msg);
+  else if(m==='sms')window.open('sms:?body='+msg);
+  else if(m==='tw')window.open('https://twitter.com/intent/tweet?text='+msg);
+  else if(m==='copy')navigator.clipboard.writeText(SITE_URL).then(()=>showToast('🔗 Link copied!')).catch(()=>showToast(SITE_URL));
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+
+checkPaymentReturn();
+</script>
+</body>
+</html>
