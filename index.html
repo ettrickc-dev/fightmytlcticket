@@ -804,7 +804,190 @@ function updateStrength(){
   else{fill.style.background='#22c55e';txt.textContent='Strong';}
 }
 
-/* ── GENERATE DEFENSE (direct API call) ── */
+/* ── TEMPLATE LETTER BUILDER ── */
+function buildLetter(vtype,name,licenseNum,summonsNum,hearDate,incidentDate,incidentLoc,yearsDriver,ownWords,hasEvidence,evidenceDesc,additionalInfo,defenseList){
+  const today=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  const fmt=d=>{if(!d||d==='N/A')return d;try{return new Date(d+'T00:00:00').toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});}catch(e){return d;}};
+  const hd=fmt(hearDate),id=fmt(incidentDate);
+  const evSection=hasEvidence!=='none'&&evidenceDesc?'\n\nIn support of this defense, Respondent has the following evidence: '+evidenceDesc+'. This evidence directly corroborates Respondent\'s account and should be given full weight.':'';
+  const addSection=additionalInfo?'\n\nAdditional context relevant to this matter: '+additionalInfo:'';
+  const defSection=defenseList&&defenseList.length>0?'\n\nSpecific defenses applicable to this case: '+defenseList.join('; ')+'.':'';
+
+  const header=`OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS
+In the Matter of TAXI AND LIMOUSINE COMMISSION
+Petitioner
+- against -
+${name}
+Respondent
+
+Summons No.: ${summonsNum}
+TLC License No.: ${licenseNum}
+Hearing Date: ${hd}
+
+RESPONDENT'S DEFENSE STATEMENT
+${'━'.repeat(64)}`;
+
+  const footer=`
+${'━'.repeat(64)}
+Respectfully submitted,
+
+${name}
+TLC License No. ${licenseNum}
+Summons No. ${summonsNum}
+Date: ${today}
+
+${'━'.repeat(64)}
+CERTIFICATION UNDER PENALTY OF PERJURY
+
+I, ${name}, certify under penalty of perjury that I am authorized to submit this defense statement and that to the best of my knowledge, all information contained herein is true and accurate.
+
+Signature: _________________________________  Date: ________________
+
+Printed Name: ${name}
+${'━'.repeat(64)}`;
+
+  const bodies={
+verbal:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum}, charging a violation of TLC Rule 80-12(e) of Title 35 RCNY — threatening, harassing, or abusing any person while performing duties as a TLC licensee. The alleged incident occurred on ${id} at ${incidentLoc}. Respondent has served as a licensed TLC driver for ${yearsDriver} with an unblemished professional record. For the reasons set forth herein, Respondent respectfully requests that this summons be dismissed in its entirety, or in the alternative, that the minimum available penalty be imposed.
+
+II. APPLICABLE LEGAL STANDARD
+
+TLC Rule 80-12(e) prohibits threatening, harassing, or abusing any person while performing the duties of a licensee. The applicable standard is objective — not whether the complaining party personally felt abused, but whether a reasonable person in that position would feel threatened, harassed, or abused. See TLC v. Wagner C. Oliveira, Appeal No. 70600808A (March 30, 2016). The TLC bears the burden of proving the violation by a preponderance of the evidence — i.e., that it is more likely than not that a reasonable person would experience the conduct as abusive. Mere expressions of frustration, even if heated, do not meet this standard without more. The Tribunal has further held that a driver who "chooses to engage in a publicly regulated business" accepts certain restrictions on conduct, but those restrictions do not eliminate the right to express disagreement in a non-threatening manner. See TLC v. Elie Merhy, Appeal No. 10075098C (May 1, 2017).
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following occurred: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence does not establish by a preponderance that Respondent's conduct met the objective standard for a violation of Rule 80-12(e).${defSection}
+
+In TLC v. Bataller, Appeal No. 73221705A (March 6, 2026), the Tribunal affirmed that the use of profanity, while relevant, must be assessed in context — the question is whether the totality of the conduct, viewed objectively, constitutes abuse. The Tribunal in TLC v. Dramera, Appeal No. 10270193H (March 6, 2026), further clarified that the "duties and responsibilities of a licensee" element is satisfied broadly but that the underlying conduct must still rise to the level of threatening, harassing, or abusing. In TLC v. Bhuyan (2021), an OATH ALJ recommended lifting suspension for a driver with a spotless 14-year record because an isolated incident did not demonstrate a pattern dangerous to public safety. Respondent's record similarly reflects years of professional service without prior verbal abuse complaints.
+
+Any words spoken on the date in question, when viewed in full context and assessed by the objective reasonable person standard, did not rise to the level of abuse contemplated by Rule 80-12(e). The absence of any physical conduct, threats, or pattern of behavior further undermines the charged violation. The TLC has not met its burden.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has driven professionally for ${yearsDriver} without a history of verbal abuse violations or passenger complaints. Any lapse in composure was isolated and is not reflective of Respondent's character or fitness. The consequences of suspension — including loss of income and inability to serve passengers — are severe and disproportionate to the circumstances presented. For all of the foregoing reasons, Respondent respectfully requests that this Honorable Tribunal dismiss Summons No. ${summonsNum} in its entirety, or in the alternative, impose the minimum available penalty.`,
+
+unlicensed:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum}, charging a violation of Administrative Code §19-506(b)(1) — offering to operate a for-hire vehicle without a valid TLC license. The alleged incident occurred on ${id} at ${incidentLoc}. Respondent has driven professionally for ${yearsDriver} and respectfully requests dismissal of this charge, or in the alternative, imposition of the minimum available penalty.
+
+II. APPLICABLE LEGAL STANDARD
+
+Administrative Code §19-506(b)(1) prohibits offering to operate for hire an unlicensed vehicle in New York City. The operative element is an actual agreement to transport for hire — while who solicited whom is not determinative, the TLC must still prove by a preponderance that an agreement was reached, that the vehicle was unlicensed, and that the summons is procedurally valid. See TLC v. Hyppolite, Appeal No. 73091959A (March 12, 2026) (holding that the agreement to transport constitutes the offer, but affirming that entrapment is not a recognized administrative defense). A sworn summons constitutes prima facie evidence but may be rebutted by credible evidence. The TLC's burden of establishing each element of the violation remains throughout.
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following occurred: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence is insufficient to establish the charged violation by a preponderance.${defSection}
+
+In TLC v. Hyppolite (2026), the Tribunal confirmed that while the identity of the soliciting party does not excuse the conduct, the core element — an actual agreement to transport for hire — must still be proven. Where the Respondent credibly disputes that any binding agreement was reached, or where procedural defects exist in the summons or the officer's identification of the vehicle, dismissal is appropriate. The Tribunal has also recognized that where a driver's TLC license was valid or pending renewal, the unlicensed activity charge is undermined. See TLC v. Casseus, Appeal No. 72141186A (December 4, 2018). Respondent submits that the evidence, when fully considered, does not meet the preponderance standard.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a TLC license for ${yearsDriver} and served passengers professionally throughout. The financial consequences of a $1,500 fine and potential vehicle seizure would be severe and disproportionate. Respondent respectfully requests dismissal of Summons No. ${summonsNum} in its entirety, or in the alternative, the minimum available penalty.`,
+
+fitness:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in the above-captioned fitness proceeding brought pursuant to Administrative Code §§19-505(l) and 19-512.1, and 35 RCNY §68-14. Respondent respectfully requests a finding of fitness to maintain his TLC Driver License, or in the alternative, the least restrictive available remedy. Respondent has served as a licensed TLC driver for ${yearsDriver} and submits that the totality of evidence demonstrates present fitness for continued licensed service.
+
+II. APPLICABLE LEGAL STANDARD
+
+Under 35 RCNY §68-14(e), a determination of unfitness "shall not be based solely by reason" of a conviction. The analysis must consider whether there is "a direct relationship between the criminal offense and the duties of a Licensee," or whether continued licensure "would pose an unreasonable risk to the safety or welfare of specific individuals or the general public." The Tribunal must weigh all eight factors under §68-14(f): (1) specific duties of a licensee; (2) bearing of the offense on fitness; (3) time elapsed since the offense; (4) age at time of offense; (5) years of licensure and overall record; (6) seriousness of the offense; (7) rehabilitation and good conduct; and (8) the Commission's interest in public safety. See Taxi & Limousine Comm'n v. Fernandez, OATH Index No. 486/26 (March 2, 2026). New York Correction Law Article 23-A further requires meaningful weight to be given to rehabilitation and elapsed time. Following Nnebe v. Daus, 644 F.3d 147 (2d Cir. 2011), the Commission must conduct an individualized review rather than applying categorical rules.
+
+III. STATEMENT OF FACTS
+
+The circumstances underlying this fitness proceeding are as follows: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+A thorough analysis of all eight §68-14(f) factors weighs in favor of a finding of continued fitness.${defSection}
+
+With respect to rehabilitation: Respondent has taken concrete, documented steps to address the circumstances underlying this proceeding. The OATH Tribunal has consistently held that genuine rehabilitation, supported by credible evidence, is a powerful mitigating factor against revocation. In TLC v. Bhuyan (2021), the ALJ recommended lifting suspension for a driver with a spotless record where an isolated incident did not reflect a dangerous pattern. In TLC v. Kamal (2021), suspension was lifted where evidence indicated the driver was not the initial aggressor and the incident was isolated. Even in TLC v. Fernandez (2026), where revocation was recommended, the Tribunal gave full weight to rehabilitation evidence while finding the elapsed time insufficient — a factor that distinguishes Respondent's case where greater time has passed and stronger rehabilitation evidence exists.
+
+The Commission's interest in public safety — while paramount — must be balanced against the driver's years of professional service, demonstrated rehabilitation, and the absence of any pattern of dangerous behavior. Under the preponderance standard, the evidence supports a finding of present fitness.${evSection?'\n\n'+evSection.trim():''}
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has driven professionally for ${yearsDriver}, serving passengers safely and responsibly. The incident underlying this proceeding was isolated. Respondent has cooperated fully with all required programs, demonstrated genuine rehabilitation, and maintains strong community and family ties. Revocation would have a devastating financial impact. Respondent respectfully requests a finding of fitness and restoration of full licensure.`,
+
+fhv_nonuse:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum} charging a violation of Administrative Code §19-504(g) — nonuse of a For-Hire Vehicle (FHV) license for more than 60 consecutive days. The alleged period of nonuse is stated to have begun approximately ${id}. Respondent has maintained a TLC license for ${yearsDriver} and respectfully requests dismissal of this charge, or in the alternative, no revocation.
+
+II. APPLICABLE LEGAL STANDARD
+
+Administrative Code §19-504(g) provides for revocation of an FHV license upon nonuse for 60 or more consecutive days. The Code recognizes two defenses: (1) force majeure or similar acts beyond the owner's control, and (2) a disabling illness suffered by an owner-driver. See TLC v. STV Transportation Corp., Appeal No. JW0006817 (March 11, 2026); TLC v. Ketalos Enterprise, Inc., Appeal No. JW0006842 (March 11, 2026). A TLC employee Certification constitutes prima facie evidence of nonuse when accompanied by the summons, but Respondent may rebut this case with evidence of a recognized defense. Alternatively, nonuse may be excused where the vehicle was placed in TLC-authorized storage under §59A-36 (up to 90 days) or the license was properly transferred under §59A-07(f)(2).
+
+III. STATEMENT OF FACTS
+
+The circumstances surrounding the alleged period of nonuse are as follows: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+Respondent submits that the evidence establishes a recognized defense to the charged nonuse, or that Petitioner has not established its prima facie case.${defSection}
+
+The Appeals Tribunal in STV Transportation (2026) and Ketalos (2026) confirmed the two recognized defenses and held that vehicle repair, standing alone, does not constitute force majeure. However, those decisions also confirm that where a respondent presents credible evidence of a qualifying defense, the charge must fail. Respondent presents such evidence here. Furthermore, where TLC trip data records are inaccurate or incomplete, the prima facie case is weakened and may be rebutted. Respondent respectfully requests that all supporting documentation be given full evidentiary weight.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a TLC FHV license for ${yearsDriver} with consistent compliance. The period of nonuse was involuntary. Revocation would cause severe financial hardship and end Respondent's livelihood. Respondent respectfully requests dismissal of Summons No. ${summonsNum}, or in the alternative, that no revocation be imposed.`,
+
+overcharge:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum} charging an overcharge violation — specifically, alleged application of the out-of-town rate (Rate 4) to a trip that began and ended within New York City, or a related overcharge. The alleged incident occurred on ${id} at ${incidentLoc}. Respondent has driven professionally for ${yearsDriver} and respectfully requests dismissal of this summons, or in the alternative, the minimum available penalty.
+
+II. APPLICABLE LEGAL STANDARD
+
+TLC overcharge regulations prohibit applying a rate other than the authorized rate for the trip. The TLC typically relies on GPS computer records to establish the charge. GPS records, however, are not infallible — they are subject to technical errors, rate code carry-over from prior trips, coordinate inaccuracies, and data processing errors. The TLC must prove the violation by a preponderance of the evidence. Respondent has the right to review all GPS records prior to the hearing and to challenge specific inaccuracies. See TLC v. Cheema (2010) (noting that systematic overcharging across hundreds of trips is distinguishable from isolated technical anomalies, which require more careful factual scrutiny).
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following circumstances pertained to the trip and fare at issue: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence does not support a finding of intentional overcharging by a preponderance.${defSection}
+
+A common and well-recognized cause of apparent Rate 4 charges is meter carry-over — where Rate 4 was set for a prior out-of-city trip and the meter was not reset before the next passenger boarded. This is a technical issue, not intentional misconduct. Where a driver demonstrates that the rate code was set inadvertently and that no deliberate overcharge occurred, the element of willful misconduct necessary to support severe penalties is absent. The GPS records, when reviewed carefully, do not accurately reflect the circumstances of the trip. Respondent further notes that no contemporaneous complaint was filed by any passenger regarding the fare — a significant fact undermining the inference of any overcharge. The absence of a victim complaint, combined with Respondent's clean overcharge history, weighs heavily against the charged violation.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a clean overcharge record throughout ${yearsDriver} of licensed driving. No prior Rate 4 violations exist. This alleged incident, if it occurred at all, was an isolated technical anomaly. Suspension or revocation would be grossly disproportionate. Respondent respectfully requests dismissal of Summons No. ${summonsNum} in its entirety.`,
+
+passenger:`I. INTRODUCTION
+
+Respondent ${name}, holder of TLC Driver License No. ${licenseNum}, submits this defense in response to Summons No. ${summonsNum} arising from a passenger complaint alleging improper conduct on ${id} at ${incidentLoc}. Respondent respectfully denies the material allegations and requests dismissal of all charges, or in the alternative, the minimum available penalty. Respondent has served as a TLC-licensed driver for ${yearsDriver} with a consistent record of professionalism and passenger safety.
+
+II. APPLICABLE LEGAL STANDARD
+
+In passenger complaint proceedings, the TLC must prove by a preponderance of the evidence both that Respondent engaged in the alleged conduct AND that continued licensure presents a threat to public health or safety. See OATH TLC Licensee Cases Guide (Rev. Dec. 2025); Nnebe v. Daus, 644 F.3d 147, 159 (2d Cir. 2011) ("among the most critical functions performed by the TLC are ensuring the safety of the taxi-riding public and maintaining the public's trust"). The complainant's testimony, standing alone, is not automatically sufficient — the Hearing Officer must independently assess credibility and weigh all available evidence. Respondent has the right to cross-examine the complaining witness. Following Nnebe, the TLC's interest in public safety must be weighed against the driver's due process rights and livelihood interests through individualized review.
+
+III. STATEMENT OF FACTS
+
+On ${id}, at ${incidentLoc}, the following events occurred: ${ownWords}${evSection}${addSection}
+
+IV. LEGAL ARGUMENT
+
+The evidence does not establish by a preponderance that Respondent engaged in the alleged conduct, nor that continued licensure presents any threat to public health or safety.${defSection}
+
+The complainant's account is inconsistent, unsupported by independent evidence, and does not meet the preponderance standard. Where a complainant's testimony is the sole basis for the charge and is contradicted by physical evidence, video footage, or witness testimony, the TLC has failed to meet its burden. See TLC v. Dramera, Appeal No. 10270193H (March 6, 2026) (credibility of the complaining witness is central to the determination). In TLC v. Kamal (2021), the ALJ recommended lifting suspension where evidence suggested the driver was not the initial aggressor — demonstrating that context and credibility are paramount. Critically, the standard requires not merely that an incident occurred, but that Respondent's continued licensure poses a specific threat to public safety. Respondent's clean complaint history, high passenger ratings, and ${yearsDriver} of professional service demonstrate conclusively that no such threat exists.
+
+V. MITIGATING FACTORS AND CONCLUSION
+
+Respondent has maintained a TLC license for ${yearsDriver} without prior passenger complaints or conduct violations. High ratings and the absence of any prior disciplinary history demonstrate that this is an isolated, uncorroborated allegation inconsistent with Respondent's entire professional record. Revocation or suspension would be disproportionate and would cause severe financial hardship. Respondent respectfully requests that this Honorable Tribunal dismiss all charges contained in Summons No. ${summonsNum} in their entirety.`
+  };
+
+  return header+'\n\n'+(bodies[vtype]||bodies.verbal)+'\n'+footer;
+}
+
+/* ── GENERATE DEFENSE (template-based, no API needed) ── */
 async function generateDefense(){
   if(!selectedVtype){showToast('⚠️ Please select a violation type first');return;}
   const name=document.getElementById('driverName').value.trim()||'the Respondent';
@@ -833,93 +1016,17 @@ async function generateDefense(){
   let mi=0;
   const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('aiStatusText').textContent=msgs[mi];},2200);
 
-  const vtypeNames={verbal:'Verbal Abuse / Profanity (TLC Rule 80-12(e))',unlicensed:'Unlicensed Activity (Admin Code §19-506(b)(1))',fitness:'Fitness Case (Drug Test / DWAI / Criminal Conviction)',fhv_nonuse:'FHV Nonuse for 60+ Days (Admin Code §19-504(g))',overcharge:'Passenger Overcharge / Rate 4 Violation',passenger:'Passenger Complaint'};
-  const vtypeName=vtypeNames[selectedVtype]||selectedVtype;
-
-  const prompt=`You are an expert NYC administrative law attorney specializing in TLC (Taxi and Limousine Commission) cases at OATH (Office of Administrative Trials and Hearings). Write a formal, citation-backed defense letter for the following case.
-
-CASE DETAILS:
-- Respondent Name: ${name}
-- TLC License Number: ${licenseNum}
-- Summons Number: ${summonsNum}
-- Violation Type: ${vtypeName}
-- Hearing Date: ${hearDate}
-- Incident Date: ${incidentDate}
-- Incident Location: ${incidentLoc}
-- Years as TLC Driver: ${yearsDriver}
-
-RESPONDENT'S ACCOUNT:
-${ownWords}
-
-EVIDENCE AVAILABLE:
-- Type: ${hasEvidence}
-${evidenceDesc?'- Description: '+evidenceDesc:''}
-
-DEFENSE ARGUMENTS TO INCLUDE:
-${defenseList.length>0?defenseList.map(d=>'- '+d).join('\n'):'- General defense based on the facts presented'}
-
-ADDITIONAL CONTEXT:
-${additionalInfo||'None provided'}
-
-INSTRUCTIONS:
-Write a formal OATH defense letter with the following structure:
-
-1. HEADER (centered):
-   OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS
-   In the Matter of TAXI AND LIMOUSINE COMMISSION vs. ${name}
-   Summons No. ${summonsNum}
-   RESPONDENT'S DEFENSE STATEMENT
-
-2. INTRODUCTION (1-2 paragraphs): Introduce the respondent professionally with their years of TLC service. State the summons and charge. Assert that the summons should be dismissed or the minimum penalty imposed.
-
-3. LEGAL STANDARD (1 paragraph): Cite the correct TLC rule and OATH standard of proof. For verbal abuse (80-12e): cite the objective "reasonable person" standard from TLC v. Wagner C. Oliveira, Appeal No. 70600808A. For FHV nonuse: cite Code §19-504(g) and the two limited defenses. For fitness cases: cite 35 RCNY §68-14(f) and all 8 factors. For unlicensed activity: cite Code §19-506(b)(1).
-
-4. STATEMENT OF FACTS (2 paragraphs): Present the respondent's version of events clearly and professionally.
-
-5. LEGAL ARGUMENT (2-3 paragraphs): Apply each defense argument to the facts. Cite real OATH precedent.
-
-6. MITIGATING FACTORS (1 paragraph): Years of service, clean record, passenger ratings, community ties, financial impact.
-
-7. CONCLUSION: Request dismissal or minimum penalty.
-
-Then end with exactly:
-
-Respectfully submitted,
-
-${name}
-TLC License No. ${licenseNum}
-Summons No. ${summonsNum}
-
-─────────────────────────────────────────────
-CERTIFICATION UNDER PENALTY OF PERJURY
-
-I, ${name}, certify under penalty of perjury that I am authorized to submit this defense statement and that to the best of my knowledge, all information contained herein is true and accurate.
-
-Signature: _________________________________  Date: ________________
-
-Printed Name: ${name}
-─────────────────────────────────────────────
-
-Write ONLY the letter. Use formal legal language. Be specific with rule citations. The letter should be 600-900 words.`;
-
-  
+  // Simulate preparation time for UX, then render letter
+  await new Promise(r=>setTimeout(r,3500));
+  clearInterval(iv);
+  document.getElementById('aiStatus').style.display='none';
 
   try{
-    const response=await fetch('https://gentle-feather-f71f.ettrickc.workers.dev',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1500,messages:[{role:'user',content:prompt}]})
-    });
-    clearInterval(iv);
-    document.getElementById('aiStatus').style.display='none';
-    const data=await response.json();
-    if(!response.ok||data.error)throw new Error(data.error?.message||'Request failed');
-    const letter=data.content?.[0]?.text||'';
-    if(!letter)throw new Error('No letter returned');
+    const letter=buildLetter(selectedVtype,name,licenseNum,summonsNum,hearDate,incidentDate,incidentLoc,yearsDriver,ownWords,hasEvidence,evidenceDesc,additionalInfo,defenseList);
     generatedLetter=letter;
 
-    // Truncate at CONCLUSION / Respectfully submitted
-    const cutIdx=(()=>{const m=letter.search(/CONCLUSION|Respectfully submitted/i);return m>0?m:Math.floor(letter.length*.65);})();
+    // Truncate at CONCLUSION / Respectfully submitted for preview
+    const cutIdx=(()=>{const m=letter.search(/Respectfully submitted/i);return m>0?m:Math.floor(letter.length*.62);})();
     const preview=letter.substring(0,cutIdx);
 
     const docContent=document.getElementById('docContent');
@@ -929,7 +1036,7 @@ Write ONLY the letter. Use formal legal language. Be specific with rule citation
     function typeNext(){
       if(i<chars.length){
         docText.textContent+=chars[i];i++;
-        setTimeout(typeNext,chars[i-1]==='\n'?12:chars[i-1]==='.'?35:7);
+        setTimeout(typeNext,chars[i-1]==='\n'?8:chars[i-1]==='.'?25:4);
       } else {
         const cur=document.getElementById('typingCursor');if(cur)cur.remove();
         document.getElementById('docFade').classList.add('vis');
@@ -941,11 +1048,9 @@ Write ONLY the letter. Use formal legal language. Be specific with rule citation
     docContent.addEventListener('contextmenu',e=>{if(!isPaid)e.preventDefault();});
     document.addEventListener('keydown',e=>{if(!isPaid&&docContent.contains(document.activeElement)&&(e.ctrlKey||e.metaKey)&&['c','a','p'].includes(e.key))e.preventDefault();});
   } catch(err){
-    clearInterval(iv);
     console.error(err);
-    const errMsg=err?.message||String(err)||'Unknown error';
-    document.getElementById('aiStatus').innerHTML='<span style="color:#f87171">⚠️ Error: '+errMsg+'</span>';
-    showToast('❌ '+errMsg);
+    document.getElementById('aiStatus').innerHTML='<span style="color:#f87171">⚠️ Error building letter — please try again.</span>';
+    showToast('❌ Error building letter — please retry');
   } finally {
     document.getElementById('generateBtn').disabled=false;
     document.getElementById('generateBtn').innerHTML='⚖️ Regenerate Defense Letter';
