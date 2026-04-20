@@ -804,7 +804,7 @@ function updateStrength(){
   else{fill.style.background='#22c55e';txt.textContent='Strong';}
 }
 
-/* ── GENERATE DEFENSE (calls Netlify function) ── */
+/* ── GENERATE DEFENSE (direct API call) ── */
 async function generateDefense(){
   if(!selectedVtype){showToast('⚠️ Please select a violation type first');return;}
   const name=document.getElementById('driverName').value.trim()||'the Respondent';
@@ -834,16 +834,87 @@ async function generateDefense(){
   const iv=setInterval(()=>{mi=(mi+1)%msgs.length;document.getElementById('aiStatusText').textContent=msgs[mi];},2200);
 
   const vtypeNames={verbal:'Verbal Abuse / Profanity (TLC Rule 80-12(e))',unlicensed:'Unlicensed Activity (Admin Code §19-506(b)(1))',fitness:'Fitness Case (Drug Test / DWAI / Criminal Conviction)',fhv_nonuse:'FHV Nonuse for 60+ Days (Admin Code §19-504(g))',overcharge:'Passenger Overcharge / Rate 4 Violation',passenger:'Passenger Complaint'};
+  const vtypeName=vtypeNames[selectedVtype]||selectedVtype;
 
-  const payload={name,licenseNum,summonsNum,hearDate,incidentDate,incidentLoc,yearsDriver,ownWords,hasEvidence,evidenceDesc,additionalInfo,defenseList,vtypeName:vtypeNames[selectedVtype]||selectedVtype};
+  const prompt=`You are an expert NYC administrative law attorney specializing in TLC (Taxi and Limousine Commission) cases at OATH (Office of Administrative Trials and Hearings). Write a formal, citation-backed defense letter for the following case.
+
+CASE DETAILS:
+- Respondent Name: ${name}
+- TLC License Number: ${licenseNum}
+- Summons Number: ${summonsNum}
+- Violation Type: ${vtypeName}
+- Hearing Date: ${hearDate}
+- Incident Date: ${incidentDate}
+- Incident Location: ${incidentLoc}
+- Years as TLC Driver: ${yearsDriver}
+
+RESPONDENT'S ACCOUNT:
+${ownWords}
+
+EVIDENCE AVAILABLE:
+- Type: ${hasEvidence}
+${evidenceDesc?'- Description: '+evidenceDesc:''}
+
+DEFENSE ARGUMENTS TO INCLUDE:
+${defenseList.length>0?defenseList.map(d=>'- '+d).join('\n'):'- General defense based on the facts presented'}
+
+ADDITIONAL CONTEXT:
+${additionalInfo||'None provided'}
+
+INSTRUCTIONS:
+Write a formal OATH defense letter with the following structure:
+
+1. HEADER (centered):
+   OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS
+   In the Matter of TAXI AND LIMOUSINE COMMISSION vs. ${name}
+   Summons No. ${summonsNum}
+   RESPONDENT'S DEFENSE STATEMENT
+
+2. INTRODUCTION (1-2 paragraphs): Introduce the respondent professionally with their years of TLC service. State the summons and charge. Assert that the summons should be dismissed or the minimum penalty imposed.
+
+3. LEGAL STANDARD (1 paragraph): Cite the correct TLC rule and OATH standard of proof. For verbal abuse (80-12e): cite the objective "reasonable person" standard from TLC v. Wagner C. Oliveira, Appeal No. 70600808A. For FHV nonuse: cite Code §19-504(g) and the two limited defenses. For fitness cases: cite 35 RCNY §68-14(f) and all 8 factors. For unlicensed activity: cite Code §19-506(b)(1).
+
+4. STATEMENT OF FACTS (2 paragraphs): Present the respondent's version of events clearly and professionally.
+
+5. LEGAL ARGUMENT (2-3 paragraphs): Apply each defense argument to the facts. Cite real OATH precedent.
+
+6. MITIGATING FACTORS (1 paragraph): Years of service, clean record, passenger ratings, community ties, financial impact.
+
+7. CONCLUSION: Request dismissal or minimum penalty.
+
+Then end with exactly:
+
+Respectfully submitted,
+
+${name}
+TLC License No. ${licenseNum}
+Summons No. ${summonsNum}
+
+─────────────────────────────────────────────
+CERTIFICATION UNDER PENALTY OF PERJURY
+
+I, ${name}, certify under penalty of perjury that I am authorized to submit this defense statement and that to the best of my knowledge, all information contained herein is true and accurate.
+
+Signature: _________________________________  Date: ________________
+
+Printed Name: ${name}
+─────────────────────────────────────────────
+
+Write ONLY the letter. Use formal legal language. Be specific with rule citations. The letter should be 600-900 words.`;
+
+  const AKEY='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';
 
   try{
-    const response=await fetch('/.netlify/functions/defend',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const response=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':AKEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1500,messages:[{role:'user',content:prompt}]})
+    });
     clearInterval(iv);
     document.getElementById('aiStatus').style.display='none';
     const data=await response.json();
-    if(!response.ok||data.error)throw new Error(data.error||'Request failed');
-    const letter=data.letter||'';
+    if(!response.ok||data.error)throw new Error(data.error?.message||'Request failed');
+    const letter=data.content?.[0]?.text||'';
     if(!letter)throw new Error('No letter returned');
     generatedLetter=letter;
 
