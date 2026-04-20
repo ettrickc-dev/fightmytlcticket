@@ -943,8 +943,9 @@ Write ONLY the letter. Use formal legal language. Be specific with rule citation
   } catch(err){
     clearInterval(iv);
     console.error(err);
-    document.getElementById('aiStatus').innerHTML='<span style="color:#f87171">⚠️ Preparation failed — please try again.</span>';
-    showToast('❌ Error preparing your defense — please retry');
+    const errMsg=err?.message||String(err)||'Unknown error';
+    document.getElementById('aiStatus').innerHTML='<span style="color:#f87171">⚠️ Error: '+errMsg+'</span>';
+    showToast('❌ '+errMsg);
   } finally {
     document.getElementById('generateBtn').disabled=false;
     document.getElementById('generateBtn').innerHTML='⚖️ Regenerate Defense Letter';
