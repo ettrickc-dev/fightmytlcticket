@@ -902,12 +902,12 @@ Printed Name: ${name}
 
 Write ONLY the letter. Use formal legal language. Be specific with rule citations. The letter should be 600-900 words.`;
 
-  const AKEY='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';
+  
 
   try{
-    const response=await fetch('https://api.anthropic.com/v1/messages',{
+    const response=await fetch('https://gentle-feather-f71f.ettrickc.workers.dev',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':AKEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json'},
       body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1500,messages:[{role:'user',content:prompt}]})
     });
     clearInterval(iv);
