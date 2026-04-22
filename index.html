@@ -1026,7 +1026,7 @@ async function generateDefense(){
     generatedLetter=letter;
 
     // Truncate at CONCLUSION / Respectfully submitted for preview
-    const cutIdx=(()=>{const m=letter.search(/Respectfully submitted/i);return m>0?m:Math.floor(letter.length*.62);})();
+const cutIdx=(()=>{const m=letter.search(/V\. MITIGATING FACTORS AND CONCLUSION/i);return m>0?m:Math.floor(letter.length*.62);})();
     const preview=letter.substring(0,cutIdx);
 
     const docContent=document.getElementById('docContent');
