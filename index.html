@@ -605,7 +605,7 @@ footer{background:var(--dark2);border-top:1px solid var(--border);padding:32px 2
 <script>
 const STRIPE_STANDARD='https://buy.stripe.com/8x2eVebcC7QddZ88Fq83C03';
 const STRIPE_PREMIUM='https://buy.stripe.com/14AcN6eoO9Yl3kudZK83C04';
-const SITE_URL=window.location.origin+window.location.pathname;
+const SITE_URL='https://fightmytlcticket.com';
 
 let selectedVtype=null,selectedTier='standard',selectedDefenses=new Set(),generatedLetter='',isPaid=false,hearingDaysLeft=null;
 
@@ -1087,102 +1087,37 @@ function selectTier(tier,el){
   }
 }
 
-/* ── PAYLOAD SAVE / RESTORE ── */
-function savePaymentPayload(){
-  const payload={
-    letter:generatedLetter||'',
-    vtype:selectedVtype||'verbal',
-    tier:selectedTier||'standard',
-    savedAt:Date.now()
-  };
-  try{localStorage.setItem('tlc_payment_payload',JSON.stringify(payload));}catch(e){}
-  try{sessionStorage.setItem('tlc_payment_payload',JSON.stringify(payload));}catch(e){}
-  try{localStorage.setItem('tlc_letter',payload.letter);}catch(e){}
-  try{localStorage.setItem('tlc_vtype',payload.vtype);}catch(e){}
-  try{localStorage.setItem('tlc_tier',payload.tier);}catch(e){}
-}
-
-function getPaymentPayload(){
-  let payload=null;
-  try{payload=JSON.parse(sessionStorage.getItem('tlc_payment_payload')||'null');}catch(e){payload=null;}
-  if(!payload){
-    try{payload=JSON.parse(localStorage.getItem('tlc_payment_payload')||'null');}catch(e){payload=null;}
-  }
-  if(!payload){
-    payload={
-      letter:localStorage.getItem('tlc_letter')||'',
-      vtype:localStorage.getItem('tlc_vtype')||'verbal',
-      tier:localStorage.getItem('tlc_tier')||'standard'
-    };
-  }
-  return payload||{};
-}
-
-function clearPaymentParams(){
-  const clean=window.location.pathname+window.location.hash;
-  window.history.replaceState({},'',clean);
-}
-
-function unlockPaidDocument(payload){
-  if(!payload||!payload.letter)return false;
-  isPaid=true;
-  generatedLetter=payload.letter;
-  selectedVtype=payload.vtype||'verbal';
-  selectedTier=payload.tier||'standard';
-
-  const aiOutput=document.getElementById('aiOutput');
-  const docContent=document.getElementById('docContent');
-  aiOutput.classList.add('vis');
-  docContent.classList.add('unlocked');
-
-  const wm=document.getElementById('docWatermark');
-  if(wm)wm.remove();
-  document.getElementById('docFade')?.classList.remove('vis');
-  document.getElementById('docLockBadge')?.classList.remove('vis');
-
-  docContent.innerHTML='';
-  docContent.textContent=buildSubmissionInstructions(selectedVtype)+'\n\n'+generatedLetter;
-
-  document.getElementById('aiStatus').style.display='none';
-  document.getElementById('unlockSection').classList.remove('vis');
-  document.getElementById('successBanner').classList.add('vis');
-  if(selectedTier==='premium')selectTier('premium',document.getElementById('card-premium'));
-  else selectTier('standard',document.getElementById('card-standard'));
-
-  showToast('✅ Payment confirmed — defense unlocked!');
-  setTimeout(()=>aiOutput.scrollIntoView({behavior:'smooth'}),500);
-  return true;
-}
-
 /* ── PAY ── */
 function handlePay(){
   if(!generatedLetter){showToast('⚠️ Build your defense letter first');return;}
-  savePaymentPayload();
+  localStorage.setItem('tlc_letter',generatedLetter);
+  localStorage.setItem('tlc_vtype',selectedVtype||'verbal');
+  localStorage.setItem('tlc_tier',selectedTier);
   const link=selectedTier==='premium'?STRIPE_PREMIUM:STRIPE_STANDARD;
-  const successUrl=SITE_URL+'?paid=true&tier='+encodeURIComponent(selectedTier);
-  const cancelUrl=SITE_URL+'?canceled=true';
-  const joiner=link.includes('?')?'&':'?';
-  window.location.href=link+joiner+'success_url='+encodeURIComponent(successUrl)+'&cancel_url='+encodeURIComponent(cancelUrl);
+  window.location.href=link+'?success_url='+encodeURIComponent(SITE_URL+'/?paid=true&tier='+selectedTier);
 }
 
 /* ── POST-PAYMENT ── */
 function checkPaymentReturn(){
   const params=new URLSearchParams(window.location.search);
-  const paid=params.get('paid')==='true'||params.get('success')==='1'||params.get('download')==='1';
-  const canceled=params.get('canceled')==='true'||params.get('canceled')==='1';
-  const payload=getPaymentPayload();
-
-  if(paid){
-    if(!unlockPaidDocument(payload))showToast('⚠️ Payment return detected, but the defense draft could not be restored on this device.');
-    clearPaymentParams();
-    return;
+  if(params.get('paid')!=='true')return;
+  isPaid=true;
+  const savedLetter=localStorage.getItem('tlc_letter')||'';
+  const savedVtype=localStorage.getItem('tlc_vtype')||'verbal';
+  selectedVtype=savedVtype;
+  if(savedLetter){
+    generatedLetter=savedLetter;
+    document.getElementById('aiOutput').classList.add('vis');
+    const docContent=document.getElementById('docContent');
+    docContent.classList.add('unlocked');
+    docContent.innerHTML='';
+    docContent.textContent=buildSubmissionInstructions(savedVtype)+'\n\n'+savedLetter;
   }
-
-  if(canceled){
-    showToast('⚠️ Payment canceled — your progress is still saved on this device.');
-    clearPaymentParams();
-    return;
-  }
+  document.getElementById('unlockSection').classList.remove('vis');
+  document.getElementById('successBanner').classList.add('vis');
+  window.history.replaceState({},'',window.location.pathname);
+  showToast('✅ Payment confirmed — defense unlocked!');
+  setTimeout(()=>document.getElementById('aiOutput').scrollIntoView({behavior:'smooth'}),500);
 }
 
 /* ── SUBMISSION INSTRUCTIONS ── */
