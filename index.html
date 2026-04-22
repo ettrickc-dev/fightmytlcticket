@@ -1107,11 +1107,16 @@ function checkPaymentReturn(){
   selectedVtype=savedVtype;
   if(savedLetter){
     generatedLetter=savedLetter;
+    const fullDoc=buildSubmissionInstructions(savedVtype)+'\n\n'+savedLetter;
     document.getElementById('aiOutput').classList.add('vis');
     const docContent=document.getElementById('docContent');
     docContent.classList.add('unlocked');
     docContent.innerHTML='';
-    docContent.textContent=buildSubmissionInstructions(savedVtype)+'\n\n'+savedLetter;
+    // Use a <pre> so whitespace/newlines render correctly for printing
+    const pre=document.createElement('pre');
+    pre.style.cssText='white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;line-height:1.75;color:var(--text);margin:0;';
+    pre.textContent=fullDoc;
+    docContent.appendChild(pre);
   }
   document.getElementById('unlockSection').classList.remove('vis');
   document.getElementById('successBanner').classList.add('vis');
