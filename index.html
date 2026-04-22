@@ -1115,7 +1115,21 @@ function checkPaymentReturn(){
     // Use a <pre> so whitespace/newlines render correctly for printing
     const pre=document.createElement('pre');
     pre.style.cssText='white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;line-height:1.75;color:var(--text);margin:0;';
-    pre.textContent=fullDoc;
+    const splitMarker='OFFICE OF ADMINISTRATIVE TRIALS AND HEARINGS';
+    const splitIdx=fullDoc.indexOf(splitMarker);
+    if(splitIdx>0){
+      const part1=document.createElement('pre');
+      part1.style.cssText='white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;line-height:1.75;color:var(--text);margin:0;';
+      part1.textContent=fullDoc.substring(0,splitIdx);
+      const part2=document.createElement('pre');
+      part2.style.cssText='white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:13px;line-height:1.75;color:var(--text);margin:0;page-break-before:always;break-before:page;';
+      part2.textContent=fullDoc.substring(splitIdx);
+      docContent.appendChild(part1);
+      docContent.appendChild(part2);
+    } else {
+      pre.textContent=fullDoc;
+      docContent.appendChild(pre);
+    }
     docContent.appendChild(pre);
   }
   document.getElementById('unlockSection').classList.remove('vis');
